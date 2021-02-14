@@ -1,0 +1,25 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: create test dir for file creation
+    file:
+      path: /var/crash/dir1
+#      path: /var/crash/workdir
+      state: directory
+  - name: create 50 test files in /var/crash
+    file:
+      dest: "/var/crash/dir1/testfile{{ item }}"
+      state: touch
+    with_sequence: start=1 end=50
+  - name: create test dir2 for file creation
+    file:
+#      path: /var/crash/workdir
+      path: /var/crash/dir2
+      state: directory
+  - name: create 50 test files in /var/crash
+    file:
+      dest: "/var/crash/dir2/testfile{{ item }}"
+      state: touch
+    with_sequence: start=1 end=50

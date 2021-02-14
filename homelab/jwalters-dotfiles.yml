@@ -19,5 +19,5 @@
       tags: vimrc
 
 ## Author: Jake Walters
-## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/homelab/jwalters-dotfiles.yml
+## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/homelab/jwalters-dotfiles.yml --tags bashrc|vimrc
 ## Purpose: my bashrc and vimrc files
