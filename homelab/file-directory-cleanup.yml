@@ -1,0 +1,32 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: collect files
+    find:
+      paths: "/var/crash"
+#      patterns: 'test'
+      age: 1m
+      recurse: True
+      # file_type: any  # Added in ansible 2.3
+    register: collected_files
+
+  - name: collect directories
+    find:
+      paths: "/var/crash"
+      patterns: '127.0.0.1'
+      age: 1s
+      recurse: True
+      file_type: directory
+    register: collected_directories
+
+  - name: remove collected files and directories
+    file:
+      path: "{{ item.path }}"
+      state: absent
+    with_items: >
+      {{
+        collected_files.files
+        + collected_directories.files
+      }}

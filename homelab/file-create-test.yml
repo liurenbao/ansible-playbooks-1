@@ -5,21 +5,81 @@
   tasks:
   - name: create test dir for file creation
     file:
-      path: /var/crash/dir1
+      path: /var/crash/127.0.0.1
 #      path: /var/crash/workdir
       state: directory
   - name: create 50 test files in /var/crash
     file:
-      dest: "/var/crash/dir1/testfile{{ item }}"
+      dest: "/var/crash/127.0.0.1/testfile{{ item }}"
       state: touch
     with_sequence: start=1 end=50
-  - name: create test dir2 for file creation
+  - name: create test subdir for file creation
     file:
 #      path: /var/crash/workdir
-      path: /var/crash/dir2
+      path: /var/crash/127.0.0.1
       state: directory
   - name: create 50 test files in /var/crash
     file:
-      dest: "/var/crash/dir2/testfile{{ item }}"
+      dest: "/var/crash/127.0.0.1/testfile{{ item }}"
       state: touch
     with_sequence: start=1 end=50
+
+
+
+
+
+
+
+#    loop_control:
+#      pause: 60
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#- hosts: all
+#  become: yes
+#  tasks:
+#  - name: Create multiple files in /var/crash for testing
+#    file: 
+#      path: /var/crash/{{ item }}
+#      state: touch
+#    with_items:
+#    - test01.txt
+#    - test02.txt
+#    - test03.txt
+#    - test04.txt
+#    - test05.txt
+#    - test06.txt
+#    - test07.txt
+#    - test08.txt
+#    - test09.txt
+#    - test10.txt
+#    - test11.txt
+#    - test13.txt
+#    - test14.txt
+#    - test15.txt
+#    - test16.txt
+#    - test17.txt
+#    - test18.txt
+#    - test19.txt
+#    - test20.txt
+#    - test20.txt
+#    - test22.txt
+#    - test23.txt
