@@ -6,8 +6,7 @@
   - name: collect files
     find:
       paths: "/var/crash"
-#      patterns: 'test'
-      age: 1m
+      age: 30d
       recurse: True
       # file_type: any  # Added in ansible 2.3
     register: collected_files
@@ -16,7 +15,7 @@
     find:
       paths: "/var/crash"
       patterns: '127.0.0.1'
-      age: 1s
+      age: 30d
       recurse: True
       file_type: directory
     register: collected_directories
@@ -30,3 +29,7 @@
         collected_files.files
         + collected_directories.files
       }}
+
+## Author: Jake Walters
+## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/file-directory-cleanup.yml
+## Purpose: keep the crash dir in /var clean

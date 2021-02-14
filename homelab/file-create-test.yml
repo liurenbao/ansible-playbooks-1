@@ -24,15 +24,9 @@
       state: touch
     with_sequence: start=1 end=50
 
-
-
-
-
-
-
-#    loop_control:
-#      pause: 60
-
+## Author: Jake Walters
+## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/file-create-test.yml
+## Purpose: create dir/file structure to test file-delete playbook
 
 
 
