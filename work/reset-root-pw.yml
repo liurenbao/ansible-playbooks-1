@@ -1,0 +1,14 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Change root password
+      user:
+        name: root
+        update_password: always
+        password: "{{ defaultpasswd|password_hash('sha512') }}"
+
+## Author: Jake Walters
+## Command: ansible-playbook playbooks/reset-root-pw.yml --extra-vars defaultpasswd=passwordhere
+## Purpose: When running this playbook change the "defaultpasswd" variable to the desired temporary password. Change password asap.

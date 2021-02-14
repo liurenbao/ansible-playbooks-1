@@ -1,0 +1,21 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: copy my bashrc file to all servers
+      copy:
+        src: /etc/ansible/files/jwalters-bashrc
+        dest: /home/jwalters/.bashrc
+        owner: jwalters
+        group: jwalters
+    - name: copy my vimrc file to all servers
+      copy:
+        src: /etc/ansible/files/jwalters-vimrc
+        dest: /home/jwalters/.vimrc
+        owner: jwalters
+        group: jwalters
+
+## Author: Jake Walters
+## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/homelab/jwalters-dotfiles.yml
+## Purpose: my bashrc and vimrc files

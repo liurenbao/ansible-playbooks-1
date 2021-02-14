@@ -1,0 +1,28 @@
+---
+- hosts: all
+  gather_facts: no
+  ignore_unreachable: yes
+  become: yes
+  tasks:
+  - name: restart winbind
+    service:
+      name: winbind
+      state: restarted
+
+  - name: pause the playbook run to allow winbind to reconnect
+    pause:
+      seconds: 8
+
+  - name: confirm winbind is running
+    service:
+      name: winbind
+      state: started
+
+
+## Author: Jake Walters
+## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/restart-winbind.yml
+## Purpose: Restart the winbind service
+## Issues: 
+##      - Winbind disconnects the ansible id and ansible reports the host unreachable and the run fails even though winbind is restarted
+##        - Current workaround is to ignore_unreachable and pause the playbook run to allow winbind to reconnect to ad
+##          then confirm it is running.

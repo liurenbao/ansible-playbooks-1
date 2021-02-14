@@ -1,0 +1,38 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: enable root logins
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+      state: present
+      validate: '/usr/sbin/sshd -T -f %s'
+    with_items:
+          - regexp: "^PermitRootLogin no"
+            line: "PermitRootLogin yes"
+    notify: restart ssh
+    tags: enable
+
+  - name: disable root logins
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+      state: present
+      validate: '/usr/sbin/sshd -T -f %s'
+    with_items:
+          - regexp: "^PermitRootLogin yes"
+            line: "PermitRootLogin no"
+    notify: restart ssh
+    tags: disable
+
+  handlers:
+    - name: restart ssh
+      service: name=sshd state=restarted
+
+## Author: Jake Walters
+## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/enable-root-login.yml --tags enable|disable
+## Purpose: Enable and disable ssh root login and restart sshd

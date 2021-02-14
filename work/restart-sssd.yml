@@ -1,0 +1,13 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: restart sssd
+    service:
+      name: sssd
+      state: restarted
+
+## Author: Jake Walters
+## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/restart-sssd.yml
+## Purpose: Restart the sssd service
