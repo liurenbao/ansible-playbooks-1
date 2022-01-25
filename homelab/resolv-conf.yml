@@ -9,7 +9,3 @@
         dest: /etc/resolv.conf
         owner: root
         group: root
-
-## Author: Jake Walters
-## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/homelab/resolv-conf.yml
-## Purpose: keeps /etc/resolv.conf the same in my homelab

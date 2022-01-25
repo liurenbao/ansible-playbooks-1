@@ -3,6 +3,17 @@
   gather_facts: no
   become: yes
   tasks:
+    - name: create my group on all servers
+      group:
+        name: "jwalters"
+        state: present
+    - name: create my user on all servers
+      user:
+        name: "jwalters"
+        state: present
+        password: "$1$zaIWy9ni$BNMd0P13GsZdsKByA1dsY0"
+        shell: /bin/bash
+        group: jwalters
     - name: copy my bashrc file to all servers
       copy:
         src: /etc/ansible/files/jwalters-bashrc
@@ -17,7 +28,3 @@
         owner: jwalters
         group: jwalters
       tags: vimrc
-
-## Author: Jake Walters
-## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/homelab/jwalters-dotfiles.yml --tags bashrc|vimrc
-## Purpose: my bashrc and vimrc files

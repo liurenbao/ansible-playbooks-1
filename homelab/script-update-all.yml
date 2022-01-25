@@ -1,0 +1,10 @@
+---
+- name: Transfer and run update script.
+  hosts: all
+  become: yes
+  tasks:
+     - name: Transfer the script
+       copy: src=/etc/ansible/files/scripts/update-all-dev.sh dest=/usr/local/bin mode=0700
+
+#     - name: Execute the script
+#       command: /bin/bash /usr/local/bin/update-all-dev.sh

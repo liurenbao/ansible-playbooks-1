@@ -7,7 +7,3 @@
     file:
       path: /var/crash
       state: directory
-
-## Author: Jake Walters
-## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/homelab/directory-create.yml
-## Purpose: quickly create a directory on multiple hosts

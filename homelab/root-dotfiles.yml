@@ -15,7 +15,3 @@
         dest: /root/.vimrc
         owner: root
         group: root
-
-## Author: Jake Walters
-## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/homelab/root-dotfiles.yml
-## Purpose: root's bashrc and vimrc

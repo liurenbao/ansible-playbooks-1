@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - ansible.builtin.cron:
+         name: "shutdown lab hosts at 0300"
+         minute: "0"
+         hour: "3"
+         job: "/sbin/shutdown -h now"

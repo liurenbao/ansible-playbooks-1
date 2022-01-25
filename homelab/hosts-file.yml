@@ -7,7 +7,3 @@
       copy:
         src: /etc/ansible/files/main-hosts
         dest: /etc/hosts
-
-## Author: Jake Walters
-## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/homelab/hosts-file.yml
-## Purpose: manage hosts file for homelab

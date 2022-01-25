@@ -7,7 +7,3 @@
     service:
       name: winbind
       state: restarted
-
-## Author: Jake Walters
-## Command: ansible-playbook -i inventory/list-of-hosts.txt playbooks/homelab/restart-service.yml
-## Purpose: restart a service in my homelab
