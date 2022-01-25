@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: copy root's vimrc file to all servers
+      copy:
+        src: /etc/ansible/files/root-vimrc
+        dest: /root/.vimrc
+        owner: root
+        group: root

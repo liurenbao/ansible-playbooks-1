@@ -1,0 +1,55 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: find files older than x time
+      find:
+        paths: /var/crash/
+        patterns: 'test*'
+        age: 1m
+        recurse: no
+      register: files_to_be_removed
+    - name: delete files older than x time
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ files_to_be_removed.files }}"
+
+    - name: Ansible find directories older than x time
+      find:
+        paths: /var/crash
+        age: 1m
+        file_type: directory
+      register: directories_to_be_removed
+
+    - name: delete directories older than x time
+      file:
+        path: /var/crash/
+        state: absent
+        recurse: no
+      with_items: "{{ directories_to_be_removed }}"
+
+#    - debug:
+#        var: directories_to_be_removed.files
+#        var: files_to_be_removed.files
+
+
+
+
+
+## works but no way to use age
+#    - name: empty crash dir
+#      synchronize:
+#        src: "/etc/ansible/empty/crash"
+#        dest: "/var/"
+#        delete: yes
+#        recursive: yes
+
+
+#    - name: delete files older than x time
+#      file:
+#        path: files_to_be_removed
+#        age: 1m
+#        state: absent
+#      with_items: "{ files_to_be_removed.files }"

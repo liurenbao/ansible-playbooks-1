@@ -1,0 +1,7 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: Unregister from Satellite
+    command: subscription-manager unregister

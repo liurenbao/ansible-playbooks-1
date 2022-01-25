@@ -1,0 +1,39 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: update all yum based hosts
+    register: yum_update_out
+    yum:
+      name: "*"
+      state: latest
+    throttle: 10
+
+  - name: print update results
+    debug:
+#      msg: yum_update_out | select("search", "results") | list
+      var: yum_update_out
+
+  - name: checking if reboot is needed
+    command: "/usr/bin/needs-restarting"
+    register: reboot_needed
+    ignore_errors: true
+    changed_when: false
+    failed_when: reboot_needed.rc == 2
+
+  - name: reboot server
+    reboot:
+      post_reboot_delay: 60
+    throttle: 10
+    when: reboot_needed.rc == 1
+
+  - name: Pausing to allow reboot and terminate ssh connection
+    pause: seconds=30
+    when: reboot_needed.rc == 1
+
+  - name: wait for reboot to complete and ssh to become available
+    local_action: wait_for host={{ inventory_hostname }} port=22 state=started delay=30 timeout=600
+    retries: 30
+    delay: 10
+    when: reboot_needed.rc == 1
