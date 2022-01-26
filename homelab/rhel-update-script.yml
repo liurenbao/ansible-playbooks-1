@@ -1,9 +1,0 @@
----
-- hosts: all
-  gather_facts: no
-  become: yes
-  tasks:
-    - name: copy update script to /usr/local/bin file to all servers
-      copy:
-        src: /etc/ansible/files/update-all.sh
-        dest: /usr/local/bin
