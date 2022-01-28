@@ -1,5 +1,6 @@
 ---
 - name: Various tasks for my lab env
+  gather_facts: no
   hosts: all
   become: yes
   tasks:

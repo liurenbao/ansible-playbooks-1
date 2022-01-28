@@ -4,19 +4,19 @@
   become: yes
   tasks:
   - name: update all yum based hosts
-    register: yum_update_out
+#    register: yum_update_out
     yum:
       name: "*"
       state: latest
     throttle: 10
 
-  - name: print update results
-    debug:
+#  - name: print update results
+#    debug:
 #      msg: yum_update_out | select("search", "results") | list
-      var: yum_update_out
+#      var: yum_update_out
 
   - name: checking if reboot is needed
-    command: "/usr/bin/needs-restarting"
+    command: "/usr/bin/needs-restarting -r"
     register: reboot_needed
     ignore_errors: true
     changed_when: false
