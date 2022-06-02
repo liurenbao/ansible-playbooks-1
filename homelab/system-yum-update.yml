@@ -12,22 +12,22 @@
     throttle: 20
 
   - name: Check if reboot is needed RHEL6
-    when: (ansible_distribution == "RedHat" and ansible_distribution_major_version == "6")
-    shell: "/usr/bin/needs-restarting | grep hald"
+    shell: "/usr/bin/needs-restarting | grep -E 'sshd|init'"
     register: reboot_needed6
     ignore_errors: true
     changed_when: false
     failed_when: reboot_needed6.rc == 2
+    when: (ansible_distribution == "RedHat" and ansible_distribution_major_version == "6")
 
   - name: Check if reboot is needed RHEL7+
-    when: (ansible_distribution == "RedHat" and ansible_distribution_major_version == "7") or
-          (ansible_distribution == "RedHat" and ansible_distribution_major_version == "8") or
-          (ansible_distribution == "RedHat" and ansible_distribution_major_version == "9")
     shell: "/usr/bin/needs-restarting -r"
     register: reboot_needed
     ignore_errors: true
     changed_when: false
     failed_when: reboot_needed.rc == 2
+    when: (ansible_distribution == "RedHat" and ansible_distribution_major_version == "7") or
+          (ansible_distribution == "RedHat" and ansible_distribution_major_version == "8") or
+          (ansible_distribution == "RedHat" and ansible_distribution_major_version == "9")
 
   - name: Reboot Server RHEL6
     reboot:
