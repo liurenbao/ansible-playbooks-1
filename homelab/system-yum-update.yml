@@ -12,10 +12,8 @@
     throttle: 20
 
   - name: Check if reboot is needed RHEL6
-    when:
-      - ansible_distribution == "RedHat"
-      - ansible_distribution_major_version == "6"
-    command: "/usr/bin/needs-restarting"
+    when: (ansible_distribution == "RedHat" and ansible_distribution_major_version == "6")
+    shell: "/usr/bin/needs-restarting | grep hald"
     register: reboot_needed6
     ignore_errors: true
     changed_when: false
@@ -25,7 +23,7 @@
     when: (ansible_distribution == "RedHat" and ansible_distribution_major_version == "7") or
           (ansible_distribution == "RedHat" and ansible_distribution_major_version == "8") or
           (ansible_distribution == "RedHat" and ansible_distribution_major_version == "9")
-    command: "/usr/bin/needs-restarting -r"
+    shell: "/usr/bin/needs-restarting -r"
     register: reboot_needed
     ignore_errors: true
     changed_when: false
@@ -39,7 +37,8 @@
       reboot_timeout: 600
       test_command: "whoami"
     throttle: 20
-    when: reboot_needed6.rc == 1
+    ignore_errors: true
+    when: (ansible_distribution == "RedHat" and ansible_distribution_major_version == "6" and reboot_needed6.rc == 0)
 
   - name: Reboot Server RHEL7+
     reboot:
@@ -49,10 +48,7 @@
       reboot_timeout: 600
       test_command: "whoami"
     throttle: 20
-    when: reboot_needed.rc == 1
-
-# For debugging, uncomment below if needed.
-#  - name: print update results
-#    debug:
-#      msg: yum_update_out | select("search", "results") | list
-#      var: yum_update_out
+    ignore_errors: true
+    when: (ansible_distribution == "RedHat" and ansible_distribution_major_version == "7" and reboot_needed.rc == 1) or
+          (ansible_distribution == "RedHat" and ansible_distribution_major_version == "8" and reboot_needed.rc == 1) or
+          (ansible_distribution == "RedHat" and ansible_distribution_major_version == "9" and reboot_needed.rc == 1)
