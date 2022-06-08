@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: copy main /etc/resolv.conf file to all servers
+      copy:
+        src: /etc/ansible/files/resolv-conf
+        dest: /etc/resolv.conf
+        owner: root
+        group: root

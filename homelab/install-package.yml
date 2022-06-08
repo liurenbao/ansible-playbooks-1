@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: no
+  tasks:
+  - name: yum
+    ignore_errors: true
+    yum:
+      name: "{{ item }}"
+      state: present
+    with_items:
+    - yum-utils

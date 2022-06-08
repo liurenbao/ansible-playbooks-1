@@ -9,7 +9,7 @@
       name: "*"
       state: latest
 #      update_cache: "yes"
-    throttle: 20
+#    throttle: 20
 
   - name: Check if reboot is needed RHEL6
     shell: "/usr/bin/needs-restarting | grep -E 'sshd|init'"
@@ -36,7 +36,7 @@
       post_reboot_delay: 60
       reboot_timeout: 600
       test_command: "whoami"
-    throttle: 20
+#    throttle: 20
     ignore_errors: true
     when: (ansible_distribution == "RedHat" and ansible_distribution_major_version == "6" and reboot_needed6.rc == 0)
 
@@ -47,7 +47,7 @@
       post_reboot_delay: 60
       reboot_timeout: 600
       test_command: "whoami"
-    throttle: 20
+#    throttle: 20
     ignore_errors: true
     when: (ansible_distribution == "RedHat" and ansible_distribution_major_version == "7" and reboot_needed.rc == 1) or
           (ansible_distribution == "RedHat" and ansible_distribution_major_version == "8" and reboot_needed.rc == 1) or

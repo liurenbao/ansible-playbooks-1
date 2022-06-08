@@ -1,0 +1,30 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: create my group on all servers
+      group:
+        name: "jwalters"
+        state: present
+    - name: create my user on all servers
+      user:
+        name: "jwalters"
+        state: present
+        password: ""
+        shell: /bin/bash
+        group: jwalters
+    - name: copy my bashrc file to all servers
+      copy:
+        src: /etc/ansible/files/jwalters-bashrc
+        dest: /home/jwalters/.bashrc
+        owner: jwalters
+        group: jwalters
+      tags: bashrc
+    - name: copy my vimrc file to all servers
+      copy:
+        src: /etc/ansible/files/jwalters-vimrc
+        dest: /home/jwalters/.vimrc
+        owner: jwalters
+        group: jwalters
+      tags: vimrc

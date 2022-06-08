@@ -1,0 +1,38 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Finding yumtx files in /tmp
+      find:
+        paths: /tmp/
+        patterns: 'yumtx'
+        age: 5m
+        recurse: no
+      register: yumtx
+    - name: Delete yumtx files from /tmp
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ files_to_be_removed.files }}"
+
+
+
+#    - name: Ansible find directories older than x time
+#      find:
+#        paths: /var/crash
+#        age: 30d
+#        file_type: directory
+#      register: directories_to_be_removed
+
+#    - name: delete directories older than x time
+#      file:
+#        path: /var/crash/
+#        state: absent
+#        recurse: no
+#      with_items: "{{ directories_to_be_removed }}"
+
+    - debug:
+#        var: directories_to_be_removed.files
+        var: yumtx.files
+

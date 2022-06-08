@@ -1,0 +1,35 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: find files older than 30 days
+      find:
+        paths: /var/crash/
+        patterns: '127.0.0.1*'
+        age: 30d
+        recurse: no
+      register: files_to_be_removed
+    - name: delete files older than 30 days
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ files_to_be_removed.files }}"
+
+    - name: Ansible find directories older than x time
+      find:
+        paths: /var/crash
+        age: 30d
+        file_type: directory
+      register: directories_to_be_removed
+
+    - name: delete directories older than x time
+      file:
+        path: /var/crash/
+        state: absent
+        recurse: no
+      with_items: "{{ directories_to_be_removed }}"
+
+    - debug:
+        var: directories_to_be_removed.files
+        var: files_to_be_removed.files

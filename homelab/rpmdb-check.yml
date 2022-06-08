@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - yum:
+        list: kernel
+      ignore_errors: yes
+      register: result
+
+    - debug: var=result

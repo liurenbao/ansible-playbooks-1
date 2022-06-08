@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+- import_playbook: hosts-file.yml
+- import_playbook: jwalters-dotfiles.yml
+- import_playbook: resolv-conf.yml
+- import_playbook: cron-shutdownall.yml
+- import_playbook: root-dotfiles.yml
+- import_playbook: root-vimrc.yml
+- import_playbook: install-package.yml
