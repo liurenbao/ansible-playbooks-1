@@ -3,8 +3,16 @@
   gather_facts: no
   become: yes
   tasks:
+<<<<<<< HEAD
   - name: create 10 test yumtx files in /tmp
     file:
       dest: "/tmp/tesxtfile{{ item }}.yumtx"
       state: touch
     with_sequence: start=1 end=10
+=======
+  - name: create 50 test yumtx files in /tmp
+    file:
+      dest: "/tmp/testfile{{ item }}.yumtx"
+      state: touch
+    with_sequence: start=1 end=50
+>>>>>>> 3c1d3d3cefc5a6aa41b61c555a78f3491e6e5619

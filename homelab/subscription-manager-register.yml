@@ -5,11 +5,22 @@
 #    reg: vars/registration_vars.yml
   tasks:
   - name: Register Satellite RHEL 6,7,8,9
+<<<<<<< HEAD
     include_vars: 'registration_vars.yml'
     command: subscription-manager register --org="{{ org }}" --activationkey="{{ reg_key6 }}"
     ignore_errors: true
     tags:
       - register
+=======
+    command: subscription-manager register --org=13906745 --activationkey=jwalters-key
+    ignore_errors: true
+    tags:
+      - register
+#      - rhel6
+#      - rhel7
+#      - rhel8
+#      - rhel9
+>>>>>>> 3c1d3d3cefc5a6aa41b61c555a78f3491e6e5619
     when: (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '6' or ansible_distribution_major_version == '7' or ansible_distribution_major_version == '8' or ansible_distribution_major_version == '9')
 
   - name: Unregister Satellite RHEL 6,7,8,9
@@ -17,4 +28,11 @@
     ignore_errors: true
     tags:
       - unregister
+<<<<<<< HEAD
+=======
+#      - rhel6
+#      - rhel7
+#      - rhel8
+#      - rhel9
+>>>>>>> 3c1d3d3cefc5a6aa41b61c555a78f3491e6e5619
     when: (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '6' or ansible_distribution_major_version == '7' or ansible_distribution_major_version == '8' or ansible_distribution_major_version == '9')
