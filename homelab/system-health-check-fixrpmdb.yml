@@ -1,0 +1,32 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Find RPMDB files
+      find:
+        paths: /var/lib/rpm/
+        file_type: file
+        patterns: '__db.*'
+        age: 1m
+        recurse: no
+      register: rpm_db_files
+    - name: Check if RPMDB is broken
+      yum:
+        list: openssh
+      ignore_errors: yes
+      register: rpmdb_chk
+    - name: Delete RPMDB files
+      when: (rpmdb_chk.failed == true)
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ rpm_db_files.files }}"
+      ignore_errors: yes
+    - name: Fix RPMDB
+      when: (rpmdb_chk.failed == true)
+      command: "rpm --rebuilddb"
+      ignore_errors: yes
+
+#    - debug: var=rpmdb_chk.failed
+#    - debug: var=rpm_db_files.files

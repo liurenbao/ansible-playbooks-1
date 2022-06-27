@@ -1,0 +1,9 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: restart winbind
+    service:
+      name: winbind
+      state: restarted

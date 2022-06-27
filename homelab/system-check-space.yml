@@ -1,0 +1,54 @@
+- name: check_storage
+  hosts: all
+  tasks:
+
+    - name: Check /var available size"
+      shell: |
+        df /var | tr -s ' ' | cut -d" " -f 5 | tail -n 1 | sed 's/%//'
+      changed_when: no
+      ignore_errors: yes
+      check_mode: no
+      register: check_var_size
+
+    - name: Check /var/cache available size"
+      shell: |
+        df /var/cache | tr -s ' ' | cut -d" " -f 5 | tail -n 1 | sed 's/%//'
+      changed_when: no
+      ignore_errors: yes
+      check_mode: no
+      register: check_var_cache_size
+
+    - name: Check /boot available size"
+      shell: |
+        df /boot | tr -s ' ' | cut -d" " -f 5 | tail -n 1 | sed 's/%//'
+      changed_when: no
+      ignore_errors: yes
+      check_mode: no
+      register: check_boot_size
+
+    - name: Check /tmp available size"
+      shell: |
+        df /tmp | tr -s ' ' | cut -d" " -f 5 | tail -n 1 | sed 's/%//'
+      changed_when: no
+      ignore_errors: yes
+      check_mode: no
+      register: check_tmp_size
+
+    - name: Check /var/tmp available size"
+      shell: |
+        df /var/tmp | tr -s ' ' | cut -d" " -f 5 | tail -n 1 | sed 's/%//'
+      changed_when: no
+      ignore_errors: yes
+      check_mode: no
+      register: check_var_tmp_size
+
+    - name: "Assert storage available size"
+      assert:
+        that:
+          - check_var_size.stdout | int < threshold_size|default(80)
+          - check_var_cache_size.stdout | int < threshold_size|default(80)
+          - check_boot_size.stdout | int < threshold_size|default(80)
+          - check_tmp_size.stdout | int < threshold_size|default(80)
+          - check_var_tmp_size.stdout | int < threshold_size|default(80)
+        fail_msg: "Maximum usage {{ threshold_size|default(80) }}% of storage is allowed"
+        success_msg: "Storage compliant {{ threshold_size|default(80) }}% threshold"

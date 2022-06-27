@@ -1,0 +1,37 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Find yumtx files in /tmp
+      find:
+        paths: /tmp/
+        patterns: '*.yumtx'
+        age: 1m
+        recurse: no
+      register: yumtx
+    - name: Delete yum transaction files from /tmp
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ yumtx.files }}"
+    - name: Find user created yum cache in /var/tmp
+      find:
+        paths: /var/tmp/
+        file_type: directory
+        patterns: 'yum-*'
+        age: 1m
+        recurse: no
+      register: useryum
+    - name: Delete user created yum cache in /var/tmp
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ useryum.files }}"
+      ignore_errors: yes
+    - name: Clean yum cache
+      command: yum clean all
+      args:
+        warn: false
+      register: clean_chk
+      ignore_errors: yes

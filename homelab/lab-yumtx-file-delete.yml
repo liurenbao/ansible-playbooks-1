@@ -1,0 +1,18 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Finding yumtx files in /tmp
+      find:
+        paths: /tmp/
+        patterns: '*.yumtx'
+        age: 1m
+        recurse: no
+      register: yumtx
+    - name: Delete yumtx files from /tmp
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ yumtx.files }}"
+#      when: yumtx.files == True
